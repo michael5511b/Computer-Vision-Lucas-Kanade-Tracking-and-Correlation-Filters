@@ -5,7 +5,6 @@ import matplotlib.patches as patches
 from LucasKanade import LucasKanade
 
 # write your script here, we recommend the above libraries for making your animation
-ims = []
 if __name__ == '__main__':
     vid = np.load("../data/carseq.npy")
     fig = plt.figure(1)
@@ -28,13 +27,13 @@ if __name__ == '__main__':
         rects.append(rect)
 
         # For display animation
-        """
+
         r = patches.Rectangle((rect[0], rect[1]), rect[2] - rect[0] + 1, rect[3] - rect[1] + 1, linewidth=2, edgecolor='r', facecolor='none')
         plt.imshow(frame_curr, cmap='gray')
         plt.gca().add_patch(r)
         plt.pause(0.001)
         r.remove()
-        """
+
 
         # For frames 1, 100, 300, 400
         """
