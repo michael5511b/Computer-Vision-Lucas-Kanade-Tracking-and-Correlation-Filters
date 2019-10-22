@@ -17,7 +17,6 @@ def LucasKanade(It, It1, rect, p0):
 
     p_init = np.copy(p0)
     template_correction = True
-    rect_0 = [59, 116, 145, 151]
 
     # Use p0 as an indicator if the LK is comparing with the last frame
     # Or is it comparing with the first frame for template correction
@@ -32,15 +31,22 @@ def LucasKanade(It, It1, rect, p0):
     x2 = rect[2]
     y2 = rect[3]
     # Used only if compared to the first frame
-    x1_curr = rect[0]
-    y1_curr = rect[1]
-    x2_curr = rect[2]
-    y2_curr = rect[3]
+    x1_curr = 0
+    y1_curr = 0
+    x2_curr = 0
+    y2_curr = 0
+    # If it is performing template correction with the first frame, the input rect would be size 8
+    # first 4 as current rectangle coordinates
+    # last 4 as frame 1 rectangle coordinates
     if template_correction == True:
-        x1 = rect_0[0]
-        y1 = rect_0[1]
-        x2 = rect_0[2]
-        y2 = rect_0[3]
+        x1 = rect[4]
+        y1 = rect[5]
+        x2 = rect[6]
+        y2 = rect[7]
+        x1_curr = rect[0]
+        y1_curr = rect[1]
+        x2_curr = rect[2]
+        y2_curr = rect[3]
 
     rect_len_x = x2 - x1 + 1
     rect_len_y = y2 - y1 + 1
@@ -125,6 +131,7 @@ def LucasKanade(It, It1, rect, p0):
 
         spline_gradient_x = RectBivariateSpline(X, Y, Ix)
         grad_x_w = spline_gradient_x.ev(flat_yy_w, flat_xx_w)
+
         spline_gradient_y = RectBivariateSpline(X, Y, Iy)
         grad_y_w = spline_gradient_y.ev(flat_yy_w, flat_xx_w)
 

@@ -11,6 +11,7 @@ if __name__ == '__main__':
     x, y, num_frame = vid.shape
 
     rect = [59, 116, 145, 151]
+    rect_0 = [59, 116, 145, 151]
     rect_no_correct = [59, 116, 145, 151]
     rects = []
     rects.append(rect)
@@ -30,7 +31,10 @@ if __name__ == '__main__':
 
         # Correct the original LK's (comparing with the previous template) gradient descent
         # with the template in the first frame, with the original LK's gradient descent as the initial guess
-        p_n_star = LucasKanade(vid[:, :, 0], frame_curr, rect, p_n)
+        rect_star = np.zeros(8)
+        rect_star[0:4] = rect
+        rect_star[4:8] = rect_0
+        p_n_star = LucasKanade(vid[:, :, 0], frame_curr, rect_star, p_n)
 
         # If the second step (comparing with first frame) deviates too much from the
         # first step (comparing with previous frame), it might be a problem and we would not want to
