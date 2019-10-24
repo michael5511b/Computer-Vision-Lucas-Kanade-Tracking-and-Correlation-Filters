@@ -14,8 +14,10 @@ def SubtractDominantMotion(image1, image2):
     
     mask = np.ones(image1.shape, dtype=bool)
 
-    #M = LucasKanadeAffine(image1, image2)
-    M = InverseCompositionAffine(image1, image2)
+    M = LucasKanadeAffine(image1, image2)
+
+    # If using inverse composition affine
+    # M = InverseCompositionAffine(image1, image2)
 
     image2_warped = scipy.ndimage.affine_transform(image2, M, output_shape=(image2.shape[0], image2.shape[1]))
 
