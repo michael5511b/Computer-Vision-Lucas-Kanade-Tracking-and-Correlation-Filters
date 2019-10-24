@@ -8,7 +8,7 @@ from scipy.ndimage import correlate, convolve
 
 img = np.load('lena.npy')
 
-# template cornes in image space [[x1, x2, x3, x4], [y1, y2, y3, y4]]
+# template corners in image space [[x1, x2, x3, x4], [y1, y2, y3, y4]]
 pts = np.array([[248, 292, 248, 292],
                 [252, 252, 280, 280]])
 
