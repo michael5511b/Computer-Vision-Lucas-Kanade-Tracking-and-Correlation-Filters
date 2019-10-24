@@ -3,7 +3,8 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 from matplotlib import animation
 import matplotlib.patches as patches
-
+from mpl_toolkits.mplot3d import Axes3D
+from scipy.ndimage import correlate, convolve
 
 img = np.load('lena.npy')
 
@@ -30,7 +31,7 @@ def imwarp(p):
 gnd_p = np.array([252, 248])  # ground truth warp
 x = imwarp(gnd_p)  # the template
 
-# stet up figure
+# set up figure
 fig, axarr = plt.subplots(1, 3)
 axarr[0].imshow(img, cmap=plt.get_cmap('gray'))
 patch = patches.Rectangle((gnd_p[0], gnd_p[1]), dsize[1], dsize[0],
@@ -59,7 +60,6 @@ Y = np.zeros((N, 1))
 
 sigma = 5
 
-
 def init():
     return [cropax, patch, all_patchax]
 
@@ -84,6 +84,54 @@ def animate(i):
                           Y.reshape(dsize), cmap=plt.get_cmap('coolwarm'))
 
         # Place your solution code for question 4.3 here
+
+
+        ############  lambda (penalty) = 0  ############
+        penalty = 0
+
+        # Solution for g
+        g_0 = np.linalg.inv(X @ X.T + penalty * np.eye(X.shape[0], X.shape[0])) @ X @ Y
+
+        # Plot reshaped g
+        g_0_reshaped = g_0.reshape(dsize)
+        f3 = plt.figure()
+        plt.imshow(g_0_reshaped)
+        plt.title('g.reshape(dsize) for lambda = 0')
+
+        g_0_corr = correlate(img, g_0_reshaped)
+        g_0_conv = convolve(img, g_0_reshaped)
+
+        f4 = plt.figure()
+        plt.imshow(g_0_corr)
+        plt.title('Correlated g for lambda = 0')
+
+        f5 = plt.figure()
+        plt.imshow(g_0_conv)
+        plt.title('Convolved g for lambda = 0')
+
+        ############  lambda (penalty) = 1  ############
+        penalty = 1
+
+        # Solution for g
+        g_1 = np.linalg.inv(X @ X.T + penalty * np.eye(X.shape[0], X.shape[0])) @ X @ Y
+
+        g_1_reshaped = g_1.reshape(dsize)
+
+        f6 = plt.figure()
+        plt.imshow(g_1_reshaped)
+        plt.title('g.reshape(dsize) for lambda = 1')
+
+        g_1_corr = correlate(img, g_1_reshaped)
+        g_1_conv = convolve(img, g_1_reshaped)
+
+        fig7 =  plt.figure()
+        plt.imshow(g_1_corr)
+        plt.title('Correlated g for lambda = 1')
+
+        fig8 =  plt.figure()
+        plt.imshow(g_1_conv)
+        plt.title('Convolved g for lambda = 1')
+
         plt.show()
         return []
 
